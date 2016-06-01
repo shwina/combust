@@ -1,14 +1,6 @@
-import sys
-sys.path.append('..')
-sys.path.append('../../../')
-
-from theano import function, shared, sandbox
-from theano.tensor import sqrt, tensordot, max
 import numpy as np
 from numpy.testing import *
-
-from mixture import *
-from diffusion_coefficients import DiffusionCoefficientsModel
+from combust.models.diffusion_coefficients import DiffusionCoefficientsModel
 
 """ Test the temperature solve algorithm
 (Newton's method)
@@ -29,18 +21,15 @@ Vcrit = np.array([0.073, 0.713, 0.0932])
 Zcrit = np.array([0.288, 0.24, 0.295])
 omega = np.array([0.025, 0.575, 0.066])
 
-y = shared(np.array([0.8268, 0.1731, 1.1145e-007])*np.ones([16, 16, 16, 3]))
-T = shared(np.ones([16, 16, 16])*636.45)
-P = shared(np.ones([16, 16, 16])*3216669.38)
+y = np.array([0.8268, 0.1731, 1.1145e-007])*np.ones([16, 16, 16, 3])
+T = np.ones([16, 16, 16])*636.45
+P = np.ones([16, 16, 16])*3216669.38
 
 diff_coeff = DiffusionCoefficientsModel(M, adv, Tcrit, Pcrit)
 D = diff_coeff.diffusion_coefficients_matrix(T, P, y)
 
-f = function([], D)
+assert_allclose(D[:, :, :, 0, 1], 6.269e-7, 0.1)
+assert_allclose(D[:, :, :, 0, 2], 2.473e-6, 0.1)
+assert_allclose(D[:, :, :, 1, 2], 6.508e-7, 0.1)
+assert_equal(D[:, :, :, range(3), range(3)], 0.0)
 
-def test_diffusion_coefficient_matrix():
-    diffusion_coefficients = f()
-    assert_allclose(diffusion_coefficients[:, :, :, 0, 1], 6.269e-7, 0.1)
-    assert_allclose(diffusion_coefficients[:, :, :, 0, 2], 2.473e-6, 0.1)
-    assert_allclose(diffusion_coefficients[:, :, :, 1, 2], 6.508e-7, 0.1)
-    assert_equal(diffusion_coefficients[:, :, :, range(3), range(3)], 0.0)
