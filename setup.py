@@ -6,5 +6,5 @@ setup(name='combust',
         description='',
         author='Ashwin Srinath',
         packages=['combust', 'combust.models'],
-        install_requires = ['numpy']
+        install_requires = ['numpy', 'pytest']
         )
