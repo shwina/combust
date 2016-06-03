@@ -1,6 +1,10 @@
 from combust.constants import *
 import numpy as np
 
+"""
+Models for the specific heat
+"""
+
 def Submodel1(c, T):
     return c[0]*T**0 + c[1]*T + c[2]*T**2 + c[3]*T**3
 
