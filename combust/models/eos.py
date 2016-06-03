@@ -105,7 +105,7 @@ class EOSModel:
             G*A*x[:,:,:,None,:]*x[:,:,:,:,None],
             np.ones(Tcmat.shape),
                     2))
-        d2AmdT2 = 0.457236*(Rgas**2)/(2.0*T*sqrt(T))*\
+        d2AmdT2 = 0.457236*(Rgas**2)/(2.0*T*np.sqrt(T))*\
             np.tensordot(
                 (C*(1.+C)*Tcmat*np.sqrt(Tcmat)/Pcmat)*
                 x[:,:,:,None,:]*x[:,:,:,:,None],
