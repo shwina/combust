@@ -18,3 +18,26 @@ def test_ideal_gas_model():
     eos = IdealGasModel(cp, cv, R)
     T, P = eos.get_temperature_and_pressure(rho, y, E, u, v)
     assert_allclose(T, 298.)
+    assert_allclose(P, 101519.362)
+
+    cp = np.array([0., 1005., 1005.])
+    cv = np.array([0., 718., 718.])
+    R = cp-cv
+    y[:, :, 0] = 0.0
+    y[:, :, 1] = 1.0
+
+    eos = IdealGasModel(cp, cv, R)
+    T, P = eos.get_temperature_and_pressure(rho, y, E, u, v)
+    assert_allclose(T, 298.)
+    assert_allclose(P, 101519.362)
+
+    cp = np.array([1005., 1005., 1005.])
+    cv = np.array([718., 718., 718.])
+    R = cp-cv
+    y[:, :, 0] = 0.5
+    y[:, :, 1] = 0.5
+
+    eos = IdealGasModel(cp, cv, R)
+    T, P = eos.get_temperature_and_pressure(rho, y, E, u, v)
+    assert_allclose(T, 298.)
+    assert_allclose(P, 101519.362)

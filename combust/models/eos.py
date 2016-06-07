@@ -29,7 +29,7 @@ class IdealGasModel:
         cvmix = np.einsum('...k,k->...', y, self.cv)
         cpmix = np.einsum('...k,k->...', y, self.cp)
         T = (E - 0.5*(u**2 + v**2)/rho)/(rho*cvmix)
-        P = rho*RGAS*T
+        P = rho*Rmix*T
         return T, P
 
 class PengRobinsonModel:
