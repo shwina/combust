@@ -49,3 +49,16 @@ def test_ideal_gas_multiple_species():
     T, P = eos.get_temperature_and_pressure(rho, y, E, u, v)
     assert_allclose(T, 298.)
     assert_allclose(P, 101519.362)
+
+    y[:, :, 0] = 0.25
+    y[:, :, 1] = 0.75
+
+    eos = IdealGasModel(cp, cv, R)
+    T, P = eos.get_temperature_and_pressure(rho, y, E, u, v)
+    assert_allclose(T, 298.)
+    assert_allclose(P, 101519.362)
+
+
+
+
+
