@@ -1,5 +1,5 @@
 from combust.mixture import *
-from combust.models.eos import EOSModel
+from combust.models.eos import PengRobinsonModel
 from combust.models import enthalpy
 from combust.models import spheat
 
@@ -50,7 +50,7 @@ def temperature():
     Mm = mixture_molecular_weight(x, M)
     V = molar_volume(Mm, rho)
 
-    eos = EOSModel(Tcrit, Pcrit, Vcrit, Zcrit, omega)
+    eos = PengRobinsonModel(Tcrit, Pcrit, Vcrit, Zcrit, omega)
 
     for i, sp in enumerate(species):
         cp0m += y[:,:,:,i]*sp['SpecificHeatModel'](T)

@@ -1,7 +1,7 @@
 from combust.constants import *
 import numpy as np
 
-class EOSModel:
+class PengRobinsonModel:
     """ Peng-Robinson equation of state model
     for arbitrary number of species.
     Ref: Ph.D. Thesis, Sridhar Palle """
