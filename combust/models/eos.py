@@ -1,6 +1,37 @@
 from combust.constants import *
 import numpy as np
 
+class IdealGasModel:
+
+    def __init__(self, cp, cv, R):
+        """
+        Paramaters:
+        cp: array of const-pressure specific heats of all species
+        cv: array of const-volume specific heats of all species
+        R: array of gas constants of all species
+        """
+        self.cp = cp
+        self.cv = cv
+        self.R = R
+
+    def get_temperature_and_pressure(self, rho, y, E, u, v):
+        """
+        Parameters:
+        y: array of mass fractions sized [..., nspecies]
+        E: array of energy [...]
+        u, v: array of velocities in x and y directions [...]
+
+        Returns:
+        T, P: array of temperatures and pressures [...]
+        """
+
+        Rmix = np.einsum('...k,k->...', y, self.R)
+        cvmix = np.einsum('...k,k->...', y, self.cv)
+        cpmix = np.einsum('...k,k->...', y, self.cp)
+        T = (E - 0.5*(u**2 + v**2)/rho)/(rho*cvmix)
+        P = rho*Rgas*T
+        return T, P
+
 class PengRobinsonModel:
     """ Peng-Robinson equation of state model
     for arbitrary number of species.
