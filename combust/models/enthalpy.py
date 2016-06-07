@@ -48,9 +48,9 @@ class Model2(EnthalpyModel):
         h0 = ((T < 300.0)*
                Submodel3(c1, T)/self.molecular_weight  +
              ((T >= 300) & (T < 1000.0))*
-                (Rgas/1000.*T*Submodel4(c1, T)/self.molecular_weight) +
+                (RGAS/1000.*T*Submodel4(c1, T)/self.molecular_weight) +
               (T >= 1000.0)*
-                (Rgas/1000.*T*
+                (RGAS/1000.*T*
                     Submodel4(c2, T))/self.molecular_weight)
         return h0
 

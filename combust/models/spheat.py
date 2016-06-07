@@ -8,7 +8,7 @@ def Submodel1(c, T):
     return c[0]*T**0 + c[1]*T + c[2]*T**2 + c[3]*T**3
 
 def Submodel2(c, T):
-    return Rgas*(c[0]*T**0 + c[1]*T + c[2]*T**2 + c[3]*T**3 + c[4]*T**4)
+    return RGAS*(c[0]*T**0 + c[1]*T + c[2]*T**2 + c[3]*T**3 + c[4]*T**4)
 
 def Submodel3(c, T):
     return c[0]*T**0 + c[1]*T + c[2]*T**2 + c[3]*T**3 + c[4]/(T**2)
@@ -39,9 +39,9 @@ class Model2(SpHeatModel):
         cp0 = ((T < 300.0)*
                 Submodel1(c1, T)/self.molecular_weight +
               ((T >= 300.0) & (T < 1000.0))*
-                Rgas/1000.*Submodel2(c1, T)/self.molecular_weight +
+                RGAS/1000.*Submodel2(c1, T)/self.molecular_weight +
                (T >= 1000.0)*
-                Rgas/1000.*Submodel2(c2, T)/self.molecular_weight)
+                RGAS/1000.*Submodel2(c2, T)/self.molecular_weight)
         return cp0
 
 class Model3(SpHeatModel):

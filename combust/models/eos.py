@@ -29,7 +29,7 @@ class IdealGasModel:
         cvmix = np.einsum('...k,k->...', y, self.cv)
         cpmix = np.einsum('...k,k->...', y, self.cp)
         T = (E - 0.5*(u**2 + v**2)/rho)/(rho*cvmix)
-        P = rho*Rgas*T
+        P = rho*RGAS*T
         return T, P
 
 class PengRobinsonModel:
@@ -73,13 +73,13 @@ class PengRobinsonModel:
                  at each computational point
         """
         Am, Bm, dAmdT, d2AmdT2 = self.mixing_constants(T, x)
-        h = h0m + (-Rgas*(x.sum(axis=-1))*T
+        h = h0m + (-RGAS*(x.sum(axis=-1))*T
                     + (1./(2.0*np.sqrt(2.0)*Bm))*np.log(
                       (V + (1.0 - np.sqrt(2.0))*Bm)/(V + (1.0 +
                           np.sqrt(2.0))*Bm))*
                       (Am - T*dAmdT)
                    )/mmw
-        dhdT = cp0m + (-Rgas*np.sum(x, axis=-1) +
+        dhdT = cp0m + (-RGAS*np.sum(x, axis=-1) +
                 (1./(2.0*np.sqrt(2.0)*Bm))*np.log(
                     (V + (1.0 - np.sqrt(2.0))*Bm)/(V + (1.0 + np.sqrt(2.0))*Bm))*
                 (-T*d2AmdT2))/mmw
@@ -102,9 +102,9 @@ class PengRobinsonModel:
             at each computational point
         """
         Am, Bm, dAmdT, d2AmdT2 = self.mixing_constants(T, x)
-        dPdT = Rgas/(V - Bm)*x.sum(axis=-1) - dAmdT/(V**2.0 + 2*V*Bm - Bm**2)
-        dPdV = -Rgas*T/(V - Bm)**2.0*x.sum(axis=-1)*(1.0 - (2*Am)/((Rgas*T)*(V + Bm)*(V/(V - Bm) + Bm/(V + Bm))**2.0))
-        cp = cp0m + (-T*(dPdT**2./dPdV) - Rgas*x.sum(axis=-1) - (T*d2AmdT2/(2.0*np.sqrt(2.0)*Bm))*np.log(
+        dPdT = RGAS/(V - Bm)*x.sum(axis=-1) - dAmdT/(V**2.0 + 2*V*Bm - Bm**2)
+        dPdV = -RGAS*T/(V - Bm)**2.0*x.sum(axis=-1)*(1.0 - (2*Am)/((Rgas*T)*(V + Bm)*(V/(V - Bm) + Bm/(V + Bm))**2.0))
+        cp = cp0m + (-T*(dPdT**2./dPdV) - RGAS*x.sum(axis=-1) - (T*d2AmdT2/(2.0*np.sqrt(2.0)*Bm))*np.log(
                 (V + (1.0 - np.sqrt(2.0))*Bm)/(V + (1.0 + np.sqrt(2.0))*Bm)))/mmw
         return cp
 
@@ -118,9 +118,9 @@ class PengRobinsonModel:
         Vcmat = self.Vcmat
         Omat = self.Omat
         C = 0.37464 + 1.54226*Omat - 0.26992*Omat**2.0
-        B = 0.07796*Rgas*(np.diagonal(Tcmat)/
+        B = 0.07796*RGAS*(np.diagonal(Tcmat)/
                 np.diagonal(Pcmat))
-        A = (0.457236*((Rgas*Tcmat)**2.0)/Pcmat)*\
+        A = (0.457236*((RGAS*Tcmat)**2.0)/Pcmat)*\
                 ((1.0 +  C*(1.0 -
                     np.sqrt(np.tensordot(T, 1./Tcmat, 0))))**2.0)
 
@@ -136,7 +136,7 @@ class PengRobinsonModel:
             G*A*x[:,:,:,None,:]*x[:,:,:,:,None],
             np.ones(Tcmat.shape),
                     2))
-        d2AmdT2 = 0.457236*(Rgas**2)/(2.0*T*np.sqrt(T))*\
+        d2AmdT2 = 0.457236*(RGAS**2)/(2.0*T*np.sqrt(T))*\
             np.tensordot(
                 (C*(1.+C)*Tcmat*np.sqrt(Tcmat)/Pcmat)*
                 x[:,:,:,None,:]*x[:,:,:,:,None],
@@ -160,7 +160,7 @@ class PengRobinsonModel:
                      np.outer(om, np.ones(N)))
         Vcmat = (1./8)*(np.outer(np.ones(N), Vc**(1./3)) +
                         np.outer(Vc**(1./3), np.ones(N)))**3.0
-        Pcmat = Zcmat*Tcmat*Rgas/Vcmat
+        Pcmat = Zcmat*Tcmat*RGAS/Vcmat
         np.fill_diagonal(Pcmat, Pc)
         self.Tcmat = Tcmat
         self.Pcmat = Pcmat

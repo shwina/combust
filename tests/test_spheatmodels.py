@@ -28,11 +28,11 @@ def test_Model2():
     
     T = 500.0
     assert_allclose(sph_model(T),
-        (Rgas/1000.0)*Submodel2(c1, T)/mwt)
+        (RGAS/1000.0)*Submodel2(c1, T)/mwt)
 
     T = 1200.0
     assert_allclose(sph_model(T),
-        (Rgas/1000.0)*Submodel2(c2, T)/mwt)
+        (RGAS/1000.0)*Submodel2(c2, T)/mwt)
 
 def test_Model3():
     mwt = 1.0
