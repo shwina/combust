@@ -36,7 +36,7 @@ class DiffusionCoefficientsModel:
             (Tr < 2.4)*(np.exp(a*Pr) + b)/(1.0 + b) + 
             (Tr >= 2.4)*(1.0 + c*Pr))
 
-        D = np.tensordot(curve_fit_values*(P_atm/P)*(T**1.75)*1e-4, self.Dmat, 0)
+        D = np.tensordot(curve_fit_values*(PATM/P)*(T**1.75)*1e-4, self.Dmat, 0)
         return D
     
     def _compute_matrices(self):
@@ -44,6 +44,6 @@ class DiffusionCoefficientsModel:
         adv = self.adv
         M_mat = (2./(np.outer(1./M, np.ones_like(M)) + np.outer(np.ones_like(M), 1./M)))**0.5
         adv_mat = (np.outer(adv, np.ones_like(adv))**(1./3) + np.outer(np.ones_like(adv), adv)**(1./3))**2.0
-        Dmat = (0.00143/(P_atm*M_mat*adv_mat/1e5))*(1.0 - np.eye(M_mat.shape[0]))
+        Dmat = (0.00143/(PATM*M_mat*adv_mat/1e5))*(1.0 - np.eye(M_mat.shape[0]))
         self.Dmat = Dmat
 
